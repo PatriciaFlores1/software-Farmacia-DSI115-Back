@@ -64,3 +64,43 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+## Instala las librerias en la ruta de proyecto
+
+```sh
+composer install
+```
+
+## copia el .env 
+
+```sh
+cp .env.example .env
+```
+
+## Modifica las variables de la Base de Datos del .env
+
+```sh
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=name_database
+DB_USERNAME=user_database
+DB_PASSWORD=password_database
+```
+
+## Genera la llave
+
+```sh
+php artisan key:generate
+```
+## Genera el jwt
+
+```sh
+php artisan jwt:secret
+```
+## Levanta el sistema en ambiente desarrollo
+
+```sh
+php artisan serve
+```
