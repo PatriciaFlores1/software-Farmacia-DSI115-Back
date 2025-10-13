@@ -20,9 +20,13 @@ class ProductResource extends JsonResource
             "sku" => $this->resource->sku,
             "imagen" => $this->resource->product_imagen,
             "product_categorie_id" => $this->resource->product_categorie_id,
-            "product_categorie" => [
+            /*"product_categorie" => [
                 "id" => $this->resource->product_categorie->id,
                 "name" => $this->resource->product_categorie->title,
+            ],*/
+            "product_categorie" => [
+                "id" => $this->resource->product_categorie?->id,
+                "name" => $this->resource->product_categorie?->title,
             ],
             "price_general" => $this->resource->price_general,
             "price_company" => $this->resource->price_company,

@@ -31,7 +31,7 @@
                     {{$list_product->price_company}}
                 </td>
                 <td>
-                    {{$list_product->product_categorie->title}}
+                    {{$list_product->product_categorie->title?? 'Sin categoría'}}
                 </td>
                 <td>
                     {{$list_product->is_gift == 1 ? 'NO' : 'SI'}}

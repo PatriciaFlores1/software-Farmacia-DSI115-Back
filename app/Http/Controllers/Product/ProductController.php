@@ -28,7 +28,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize("viewAny",Product::class);
+        Gate::authorize("viewAny", Product::class);
         $search = $request->search;
         $categorie_id = $request->product_categorie_id;
         $warehouse_id = $request->warehouse_id;
@@ -37,9 +37,17 @@ class ProductController extends Controller
         $disponibilidad = $request->disponibilidad;
         $is_gift = $request->is_gift;
 
-        $products = Product::filterAdvance($search,$categorie_id,$warehouse_id,$unit_id,$sucursale_id,$disponibilidad,$is_gift)
-                            ->orderBy("id","desc")
-                            ->paginate(15);
+        $products = Product::filterAdvance(
+            $search,
+            $categorie_id,
+            $warehouse_id,
+            $unit_id,
+            $sucursale_id,
+            $disponibilidad,
+            $is_gift
+        )
+            ->orderBy("id", "desc")
+            ->paginate(15);
 
         return response()->json([
             "total" => $products->total(),
@@ -48,30 +56,31 @@ class ProductController extends Controller
         ]);
     }
 
-    public function config() {
-        $sucursales = Sucursale::where("state",1)->get();
-        $warehouses = Warehouse::where("state",1)->get();
-        $units = Unit::where("state",1)->get();
-        $categories = ProductCategorie::where("state",1)->get();
+    public function config()
+    {
+        $sucursales = Sucursale::where("state", 1)->get();
+        $warehouses = Warehouse::where("state", 1)->get();
+        $units = Unit::where("state", 1)->get();
+        $categories = ProductCategorie::where("state", 1)->get();
 
         return response()->json([
-            "sucursales" => $sucursales->map(function($sucursale) {
+            "sucursales" => $sucursales->map(function ($sucursale) {
                 return [
                     "id" => $sucursale->id,
                     "name" => $sucursale->name
                 ];
             }),
-            "warehouses" => $warehouses->map(function($warehouse) {
+            "warehouses" => $warehouses->map(function ($warehouse) {
                 return [
                     "id" => $warehouse->id,
                     "name" => $warehouse->name
                 ];
             }),
-            "units" => $units->map(function($unit) {
+            "units" => $units->map(function ($unit) {
                 return [
                     "id" => $unit->id,
                     "name" => $unit->name,
-                    "conversions" => $unit->conversions->map(function($conversion) {
+                    "conversions" => $unit->conversions->map(function ($conversion) {
                         return [
                             "id" => $conversion->unit_to->id,
                             "name" => $conversion->unit_to->name,
@@ -79,7 +88,7 @@ class ProductController extends Controller
                     })
                 ];
             }),
-            "categories" => $categories->map(function($categorie) {
+            "categories" => $categories->map(function ($categorie) {
                 return [
                     "id" => $categorie->id,
                     "name" => $categorie->title,
@@ -88,7 +97,8 @@ class ProductController extends Controller
         ]);
     }
 
-    public function download_excel(Request $request) {
+    public function download_excel(Request $request)
+    {
         $search = $request->get("search");
         $categorie_id = $request->get("product_categorie_id");
         $warehouse_id = $request->get("warehouse_id");
@@ -97,50 +107,49 @@ class ProductController extends Controller
         $disponibilidad = $request->get("disponibilidad");
         $is_gift = $request->get("is_gift");
 
-        $products = Product::filterAdvance($search,$categorie_id,$warehouse_id,$unit_id,$sucursale_id,$disponibilidad,$is_gift)
-                            ->orderBy("id","desc")
-                            ->get();
+        $products = Product::filterAdvance(
+            $search,
+            $categorie_id,
+            $warehouse_id,
+            $unit_id,
+            $sucursale_id,
+            $disponibilidad,
+            $is_gift
+        )
+            ->orderBy("id", "desc")
+            ->get();
 
-        return Excel::download(new ProductDownloadExcel($products),"lista_products.xlsx");
+        return Excel::download(new ProductDownloadExcel($products), "lista_products.xlsx");
     }
 
-    public function import_excel(Request $request) {
+    public function import_excel(Request $request)
+    {
         $request->validate([
             "excel" => 'required|file|mimes:xls,xlsx,csv'
         ]);
         $path = $request->file("excel");
-        $data = Excel::import(new ImportExcelProducts,$path);
+        Excel::import(new ImportExcelProducts, $path);
         return response()->json([
             "message" => 200
         ]);
     }
 
-    public function s3_imagen(Request $request){
-        $filePath = $request->file("imagen")->store('uploads','s3');
-        if($filePath == false){
-            $path = Storage::putFile("products",$request->file("imagen"));
-            return response()->json(["path" => $path]);
-        }else{
-            $url = Storage::disk('s3')->url($filePath);
-            return response()->json(["file_path" => $url]);
-        }
-    }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        Gate::authorize("create",Product::class);
-        $is_product_exits = Product::where("title",$request->title)->first();
-        if($is_product_exits){
+        Gate::authorize("create", Product::class);
+        $is_product_exits = Product::where("title", $request->title)->first();
+        if ($is_product_exits) {
             return response()->json([
                 "message" => 403,
                 "message_text" => "EL NOMBRE DEL PRODUCTO YA EXISTE"
             ]);
         }
 
-        $is_product_sku_exits = Product::where("sku",$request->sku)->first();
-        if($is_product_sku_exits){
+        $is_product_sku_exits = Product::where("sku", $request->sku)->first();
+        if ($is_product_sku_exits) {
             return response()->json([
                 "message" => 403,
                 "message_text" => "EL SKU DEL PRODUCTO YA EXISTE"
@@ -149,9 +158,8 @@ class ProductController extends Controller
 
         $product = Product::create($request->all());
 
-        $product_warehouses = json_decode($request->product_warehouses,true);
-        
-        foreach ($product_warehouses as $key => $product_warehouse) {
+        $product_warehouses = json_decode($request->product_warehouses, true);
+        foreach ($product_warehouses as $product_warehouse) {
             ProductWarehouse::create([
                 "product_id" => $product->id,
                 "warehouse_id" => $product_warehouse["warehouse_id"],
@@ -161,9 +169,8 @@ class ProductController extends Controller
             ]);
         }
 
-        $product_wallets = json_decode($request->product_wallets,true);
-
-        foreach ($product_wallets as $key => $product_wallet) {
+        $product_wallets = json_decode($request->product_wallets, true);
+        foreach ($product_wallets as $product_wallet) {
             ProductWallet::create([
                 "product_id" => $product->id,
                 "type_client" => $product_wallet["type_client"],
@@ -173,19 +180,12 @@ class ProductController extends Controller
             ]);
         }
 
-        if($request->hasFile("image")){
-            $filePath = $request->file("image")->store('uploads','s3');
-            if($filePath == false){
-                $path = Storage::putFile("products",$request->file("image"));
-                $product->update([
-                    "imagen" => $path,
-                ]);
-            }else{
-                $url = Storage::disk('s3')->url($filePath);
-                $product->update([
-                    "imagen" => $url,
-                ]);
-            }
+        // 👇 Nuevo bloque para almacenamiento local
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $product->update([
+                'imagen' => $path,
+            ]);
         }
 
         return response()->json([
@@ -198,7 +198,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        Gate::authorize("update",Product::class);
+        Gate::authorize("update", Product::class);
         $product = Product::findOrFail($id);
 
         return response()->json([
@@ -211,17 +211,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Gate::authorize("update",Product::class);
-        $is_product_exits = Product::where("title",$request->title)->where("id","<>",$id)->first();
-        if($is_product_exits){
+        Gate::authorize("update", Product::class);
+
+        $is_product_exits = Product::where("title", $request->title)->where("id", "<>", $id)->first();
+        if ($is_product_exits) {
             return response()->json([
                 "message" => 403,
                 "message_text" => "EL NOMBRE DEL PRODUCTO YA EXISTE"
             ]);
         }
 
-        $is_product_sku_exits = Product::where("sku",$request->sku)->where("id","<>",$id)->first();
-        if($is_product_sku_exits){
+        $is_product_sku_exits = Product::where("sku", $request->sku)->where("id", "<>", $id)->first();
+        if ($is_product_sku_exits) {
             return response()->json([
                 "message" => 403,
                 "message_text" => "EL SKU DEL PRODUCTO YA EXISTE"
@@ -229,29 +230,20 @@ class ProductController extends Controller
         }
 
         $product = Product::findOrFail($id);
-
         $product->update($request->all());
 
-        if($request->hasFile("image")){
-            $filePath = $request->file("image")->store('uploads','s3');
-            if($filePath == false){
-                if($product->imagen){
-                    Storage::delete($product->imagen);
-                }
-                $path = Storage::putFile("products",$request->file("image"));
-                $product->update([
-                    "imagen" => $path,
-                ]);
-            }else{
-                if($product->imagen){
-                    Storage::disk("s3")->delete($product->imagen);
-                }
-                $url = Storage::disk('s3')->url($filePath);
-                $product->update([
-                    "imagen" => $url,
-                ]);
+        // 👇 Versión local limpia
+        if ($request->hasFile('image')) {
+            if ($product->imagen) {
+                Storage::disk('public')->delete($product->imagen);
             }
+
+            $path = $request->file('image')->store('products', 'public');
+            $product->update([
+                'imagen' => $path,
+            ]);
         }
+
         return response()->json([
             "message" => 200,
         ]);
@@ -262,8 +254,14 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        Gate::authorize("delete",Product::class);
+        Gate::authorize("delete", Product::class);
         $product = Product::findOrFail($id);
+
+        // 🗑️ Eliminar la imagen del disco local si existe
+        if ($product->imagen) {
+            Storage::disk('public')->delete($product->imagen);
+        }
+
         $product->delete();
 
         return response()->json([
