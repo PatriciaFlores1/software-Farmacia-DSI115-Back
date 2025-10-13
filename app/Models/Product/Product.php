@@ -63,7 +63,7 @@ class Product extends Model
             if(str_contains($this->imagen,"https://") || str_contains($this->imagen,"http://")){
                 $link = $this->imagen;
             }else{
-                $link =  env('APP_URL').'storage/'.$this->imagen;
+                $link =  asset('storage/'.$this->imagen);
             }
         }
         return $link;

@@ -36,12 +36,18 @@ class ClienteResource extends JsonResource
             ],
             "state"  => $this->resource->state,
             "gender"  => $this->resource->gender,
-            "ubigeo_region"  => $this->resource->ubigeo_region,
+            /*"ubigeo_region"  => $this->resource->ubigeo_region,
             "ubigeo_provincia"  => $this->resource->ubigeo_provincia,
             "ubigeo_distrito"  => $this->resource->ubigeo_distrito,
             "region"  => $this->resource->region,
             "provincia"  => $this->resource->provincia,
-            "distrito"  => $this->resource->distrito,
+            "distrito"  => $this->resource->distrito,*/
+            "ubigeo_region"  => $this->resource->ubigeo_region ?? null,
+            "ubigeo_provincia"  => $this->resource->ubigeo_provincia ?? null,
+            "ubigeo_distrito"  => $this->resource->ubigeo_distrito ?? null,
+            "region"  => $this->resource->region ?? null,
+            "provincia"  => $this->resource->provincia ?? null,
+            "distrito"  => $this->resource->distrito ?? null,
             "address" => $this->resource->address,
             "created_at" => $this->resource->created_at->format("Y-m-d h:i A")
         ];
