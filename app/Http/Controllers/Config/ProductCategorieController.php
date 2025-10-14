@@ -24,7 +24,8 @@ class ProductCategorieController extends Controller
                     "id" => $categorie->id,
                     "title" => $categorie->title,
                     "state" => (int) $categorie->state,
-                    "imagen" => $categorie->imagen ? env("APP_URL")."storage/".$categorie->imagen : NULL,
+                    //"imagen" => $categorie->imagen ? env("APP_URL")."storage/".$categorie->imagen : NULL,
+                    "imagen" => $categorie->imagen ? asset('storage/'.$categorie->imagen) : NULL,
                     "created_at" => $categorie->created_at->format("Y-m-d h:i A"),
                 ];
             }),
@@ -56,7 +57,8 @@ class ProductCategorieController extends Controller
                 "id" => $categorie->id,
                 "title" => $categorie->title,
                 "state" => (int) $categorie->state,
-                "imagen" => $categorie->imagen ? env("APP_URL")."storage/".$categorie->imagen : NULL,
+                //"imagen" => $categorie->imagen ? env("APP_URL")."storage/".$categorie->imagen : NULL,
+                "imagen" => $categorie->imagen ? asset('storage/'.$categorie->imagen) : NULL,
                 "created_at" => $categorie->created_at->format("Y-m-d h:i A"),
             ],
         ]);
@@ -98,7 +100,8 @@ class ProductCategorieController extends Controller
                 "id" => $categorie->id,
                 "title" => $categorie->title,
                 "state" => (int) $categorie->state,
-                "imagen" => $categorie->imagen ? env("APP_URL")."storage/".$categorie->imagen : NULL,
+                //"imagen" => $categorie->imagen ? env("APP_URL")."storage/".$categorie->imagen : NULL,
+                "imagen" => $categorie->imagen ? asset('storage/'.$categorie->imagen) : NULL,
                 "created_at" => $categorie->created_at->format("Y-m-d h:i A"),
             ],
         ]);

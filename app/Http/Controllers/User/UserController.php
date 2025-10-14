@@ -41,7 +41,8 @@ class UserController extends Controller
                     "sucursale" => [
                         "name" => $user->sucursale->name,
                     ],
-                    "avatar" => $user->avatar ? env("APP_URL")."storage/".$user->avatar : NULL,
+                    //"avatar" => $user->avatar ? env("APP_URL")."storage/".$user->avatar : NULL,
+                    "avatar" => $user->avatar ? asset('storage/'.$user->avatar) : NULL,
                     "type_document" =>$user->type_document,
                     "n_document" =>$user->n_document,
                     "gender" =>$user->gender,
@@ -113,7 +114,8 @@ class UserController extends Controller
                 "sucursale" => [
                     "name" => $user->sucursale->name,
                 ],
-                "avatar" => $user->avatar ? env("APP_URL")."storage/".$user->avatar : NULL,
+                //"avatar" => $user->avatar ? env("APP_URL")."storage/".$user->avatar : NULL,
+                "avatar" => $user->avatar ? asset('storage/'.$user->avatar) : NULL,
                 "type_document" =>$user->type_document,
                 "n_document" =>$user->n_document,
                 "gender" =>$user->gender,
@@ -186,7 +188,8 @@ class UserController extends Controller
                 "sucursale" => [
                     "name" => $user->sucursale->name,
                 ],
-                "avatar" => $user->avatar ? env("APP_URL")."storage/".$user->avatar : NULL,
+                //"avatar" => $user->avatar ? env("APP_URL")."storage/".$user->avatar : NULL,
+                "avatar" => $user->avatar ? asset('storage/'.$user->avatar) : NULL,
                 "type_document" =>$user->type_document,
                 "n_document" =>$user->n_document,
                 "gender" =>$user->gender,

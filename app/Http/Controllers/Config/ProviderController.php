@@ -29,7 +29,8 @@ class ProviderController extends Controller
                     "phone" => $provider->phone,
                     "address" => $provider->address,
                     "state" => (int) $provider->state,
-                    "imagen" => $provider->imagen ? env("APP_URL")."storage/".$provider->imagen : NULL,
+                    //"imagen" => $provider->imagen ? env("APP_URL")."storage/".$provider->imagen : NULL,
+                    "imagen" => $provider->imagen ? asset('storage/'.$provider->imagen) : NULL,
                     "created_at" => $provider->created_at->format("Y-m-d h:i A"),
                 ];
             }),
@@ -65,7 +66,8 @@ class ProviderController extends Controller
                 "phone" => $provider->phone,
                 "address" => $provider->address,
                 "state" => (int) $provider->state,
-                "imagen" => $provider->imagen ? env("APP_URL")."storage/".$provider->imagen : NULL,
+                //"imagen" => $provider->imagen ? env("APP_URL")."storage/".$provider->imagen : NULL,
+                "imagen" => $provider->imagen ? asset('storage/'.$provider->imagen) : NULL,
                 "created_at" => $provider->created_at->format("Y-m-d h:i A"),
             ],
         ]);
@@ -88,7 +90,7 @@ class ProviderController extends Controller
         if($is_provider_exists){
             return response()->json([
                 "message" => 403,
-                "message_text" => "EL PROVEDOR YA EXISTE, INTENTE UN RUC DIFERENTE"
+                "message_text" => "EL PROVEDOR YA EXISTE, INTENTE UN NIT DIFERENTE"
             ]);
         }
         $provider = Provider::findOrFail($id);
@@ -99,6 +101,11 @@ class ProviderController extends Controller
             $path = Storage::putFile("providers",$request->file("image"));
             $request->request->add(["imagen" => $path]);
         }
+        //se agrego el 14/10/2025
+        if ($request->has('state')) {
+            $request->merge(['state' => (int) $request->input('state')]);
+        }
+
         $provider->update($request->all());
 
         return response()->json([
@@ -111,7 +118,8 @@ class ProviderController extends Controller
                 "phone" => $provider->phone,
                 "address" => $provider->address,
                 "state" => (int) $provider->state,
-                "imagen" => $provider->imagen ? env("APP_URL")."storage/".$provider->imagen : NULL,
+                //"imagen" => $provider->imagen ? env("APP_URL")."storage/".$provider->imagen : NULL,
+                "imagen" => $provider->imagen ? asset('storage/'.$provider->imagen) : NULL,
                 "created_at" => $provider->created_at->format("Y-m-d h:i A"),
             ],
         ]);
