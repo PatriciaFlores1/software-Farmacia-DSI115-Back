@@ -89,4 +89,8 @@ class User extends Authenticatable implements JWTSubject
     public function sucursale(){
         return $this->belongsTo(Sucursale::class,"sucursale_id");
     }
+    public function getAvatarUrlAttribute()
+    {
+        return $this->avatar ? asset('storage/' . $this->avatar) : null;
+    }
 }

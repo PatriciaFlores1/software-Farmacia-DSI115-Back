@@ -388,7 +388,8 @@ class KpiController extends Controller
             $categories_products->push([
                 "id" => $categories_most_sale->product_categorie_id,
                 "name" => $categories_most_sale->categorie,
-                "imagen" => env("APP_URL")."storage/".$categories_most_sale->categorie_imagen,
+                //"imagen" => env("APP_URL")."storage/".$categories_most_sale->categorie_imagen,
+                "imagen" => $categories_most_sale->categorie_imagen ? asset('storage/'.$categories_most_sale->categorie_imagen) : NULL,
                 "total_sales" => round($categories_most_sale->total_sales,2),
                 "count" => $categories_most_sale->count_sales,
                 "products" => $product_most_sale_of_categorie->map(function($product) {

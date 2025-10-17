@@ -33,13 +33,13 @@ class UserController extends Controller
                     "email" => $user->email,
                     "role_id" => (int) $user->role_id,
                     "role" => [
-                        "name" => $user->role->name,
+                        "name" => $user->role?->name,
                     ],
                     "phone" => $user->phone,
                     "state" => $user->state,
                     "sucursale_id" => (int) $user->sucursale_id,
                     "sucursale" => [
-                        "name" => $user->sucursale->name,
+                        "name" => $user->sucursale?->name,
                     ],
                     //"avatar" => $user->avatar ? env("APP_URL")."storage/".$user->avatar : NULL,
                     "avatar" => $user->avatar ? asset('storage/'.$user->avatar) : NULL,
@@ -107,12 +107,12 @@ class UserController extends Controller
                 "role_id" => (int) $user->role_id,
                 "state" => $user->state,
                 "role" => [
-                    "name" => $user->role->name,
+                    "name" => $user->role?->name,
                 ],
                 "phone" => $user->phone,
                 "sucursale_id" => (int) $user->sucursale_id,
                 "sucursale" => [
-                    "name" => $user->sucursale->name,
+                    "name" => $user->sucursale?->name,
                 ],
                 //"avatar" => $user->avatar ? env("APP_URL")."storage/".$user->avatar : NULL,
                 "avatar" => $user->avatar ? asset('storage/'.$user->avatar) : NULL,
@@ -180,13 +180,13 @@ class UserController extends Controller
                 "email" => $user->email,
                 "role_id" => (int) $user->role_id,
                 "role" => [
-                    "name" => $user->role->name,
+                    "name" => $user->role?->name,
                 ],
                 "phone" => $user->phone,
                 "state" => $user->state,
                 "sucursale_id" => (int) $user->sucursale_id,
                 "sucursale" => [
-                    "name" => $user->sucursale->name,
+                    "name" => $user->sucursale?->name,
                 ],
                 //"avatar" => $user->avatar ? env("APP_URL")."storage/".$user->avatar : NULL,
                 "avatar" => $user->avatar ? asset('storage/'.$user->avatar) : NULL,

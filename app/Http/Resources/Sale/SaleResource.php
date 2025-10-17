@@ -7,54 +7,47 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class SaleResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->resource->id,
-            "user_id"  => $this->resource->user_id,
+            "id" => $this->id,
+            "user_id" => $this->user_id,
             "user" => [
-                "full_name" => $this->resource->user->name.' '.$this->resource->user->surname,
+                "full_name" => trim(($this->user?->name ?? '').' '.($this->user?->surname ?? '')),
             ],
-            "client_id"  => $this->resource->client_id,
+            "client_id" => $this->client_id,
             "client" => [
-                "id" => $this->resource->client->id,
-                "full_name" => $this->resource->client->full_name,
-                "n_document" => $this->resource->client->n_document,
+                "id" => $this->client?->id,
+                "full_name" => $this->client?->full_name,
+                "n_document" => $this->client?->n_document,
             ],
-            "type_client"  => $this->resource->type_client,
-            "sucursale_id"  => $this->resource->sucursale_id,
+            "type_client" => $this->type_client,
+            "sucursale_id" => $this->sucursale_id,
             "sucursale" => [
-                "name" => $this->resource->sucursale->name,
+                "name" => $this->sucursale?->name,
             ],
-            "subtotal"  => $this->resource->subtotal,
-            "discount"  => $this->resource->discount,
-            "total"  => $this->resource->total,
-            "igv"  => $this->resource->igv,
-            "state_sale"  => $this->resource->state_sale,
-            "state_payment"  => $this->resource->state_payment,
-            "state_entrega" => $this->resource->state_entrega,
-            "debt"  => $this->resource->debt,
-            "paid_out"  => $this->resource->paid_out,
-            "date_validation"  => $this->resource->date_validation,
-            "date_pay_complete"  => $this->resource->date_pay_complete,
-            "description"  => $this->resource->description,
-            "created_at" => $this->resource->created_at->format("Y-m-d h:i A"),
-            "created_at_format" => $this->resource->created_at->format("Y-m-d"),
-            "sale_details" => $this->resource->sale_details->map(function($sale_detail) {
-                return SaleDetailResource::make($sale_detail);
-            }),
-            "payments" => $this->resource->payments->map(function($sale_payment) {
+            "subtotal" => $this->subtotal,
+            "discount" => $this->discount,
+            "total" => $this->total,
+            "igv" => $this->igv,
+            "state_sale" => $this->state_sale,
+            "state_payment" => $this->state_payment,
+            "state_entrega" => $this->state_entrega,
+            "debt" => $this->debt,
+            "paid_out" => $this->paid_out,
+            "date_validation" => $this->date_validation,
+            "date_pay_complete" => $this->date_pay_complete,
+            "description" => $this->description,
+            "created_at" => $this->created_at?->format("Y-m-d h:i A"),
+            "created_at_format" => $this->created_at?->format("Y-m-d"),
+            "sale_details" => $this->sale_details?->map(fn($d) => SaleDetailResource::make($d)),
+            "payments" => $this->payments?->map(function ($p) {
                 return [
-                    "id" => $sale_payment->id,
-                    "method_payment"  => $sale_payment->method_payment,
-                    "banco"  => $sale_payment->banco,
-                    "amount"  => $sale_payment->amount,
-                    "n_transaction"  => $sale_payment->n_transaction,
+                    "id" => $p->id,
+                    "method_payment" => $p->method_payment,
+                    "banco" => $p->banco,
+                    "amount" => $p->amount,
+                    "n_transaction" => $p->n_transaction,
                 ];
             }),
         ];
