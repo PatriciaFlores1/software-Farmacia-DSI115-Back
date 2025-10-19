@@ -78,8 +78,19 @@ class Sale extends Model
         return $this->payments->first();
     }
 
-    public function scopeFilterAdvance($query,$search,$type_client,$search_client,$start_date,$end_date,$type,$state_entrega,$state_payment,$search_product,$user){
-
+    public function scopeFilterAdvance(
+    $query,
+    $search = null,
+    $type_client = null,
+    $search_client = null,
+    $start_date = null,
+    $end_date = null,
+    $type = null,
+    $state_entrega = null,
+    $state_payment = null,
+    $search_product = null,
+    $user = null
+    ){
         if($search){
             $query->where("id",$search);
         }
