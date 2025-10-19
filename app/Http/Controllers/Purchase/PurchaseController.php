@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Purchase;
 use App\Models\Config\Unit;
 use Illuminate\Http\Request;
 use App\Models\Config\Provider;
-use Barryvdh\DomPDF\Facade\PDF;
+use Barryvdh\DomPDF\Facade\pdf;
 use App\Models\Config\Warehouse;
 use App\Models\Purchase\Purchase;
 use App\Http\Controllers\Controller;
