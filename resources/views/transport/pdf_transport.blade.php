@@ -161,8 +161,8 @@
   <div class="section-title">2. Entrega</div>
   <table class="info-table">
     <tr>
-      <td><strong>Almacén:</strong> {{ $transport->warehouse_end->name }}</td>
-      <td><strong>Dirección:</strong> {{ $transport->warehouse_end->address }}</td>
+      <td><strong>Almacén:</strong> {{ $transport->warehouse_end?->name }}</td>
+      <td><strong>Dirección:</strong> {{ $transport->warehouse_end?->address }}</td>
     </tr>
     <tr>
       <td><strong>Fecha de entrega:</strong> {{ $transport->date_entrega_format }}</td>
