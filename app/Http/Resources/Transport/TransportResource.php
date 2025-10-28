@@ -20,10 +20,10 @@ class TransportResource extends JsonResource
             "warehouse_start_id" => $this->resource->warehouse_start_id,
             "warehouse_end_id" => $this->resource->warehouse_end_id,
             "warehouse_start" => [
-                "name" => $this->resource->warehouse_start->name,
+                "name" => $this->resource?->warehouse_start?->name,
             ],
             "warehouse_end" => [
-                "name" => $this->resource->warehouse_end->name,
+                "name" => $this->resource?->warehouse_end?->name ?? 'SIN ASIGNAR',
             ],
             "user_id" => $this->resource->user_id,
             "user" => [
