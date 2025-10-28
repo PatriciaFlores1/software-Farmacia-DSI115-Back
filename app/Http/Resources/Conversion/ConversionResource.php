@@ -28,15 +28,15 @@ class ConversionResource extends JsonResource
             ],
             "unit_start_id" => $this->resource->unit_start_id,
             "unit_start" => [
-                "name" => $this->resource->unit_start->name,
+                "name" => $this->resource->unit_start?->name ,
             ],
             "unit_end_id" => $this->resource->unit_end_id,
             "unit_end" => [
-                "name" => $this->resource->unit_end->name,
+                "name" => $this->resource?->unit_end?->name ?? 'SIN ASIGNAR',
             ],
             "user_id" => $this->resource->user_id,
             "user" => [
-                "full_name" => $this->resource->user->name.' '.$this->resource->user->surname,
+                "full_name" => $this->resource->user?->name.' '.$this->resource->user?->surname,
             ],
             "quantity_start" => $this->resource->quantity_start,
             "quantity_end" => $this->resource->quantity_end,
