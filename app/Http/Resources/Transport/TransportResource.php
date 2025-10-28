@@ -62,7 +62,7 @@ class TransportResource extends JsonResource
                     ],
                     "unit_id"  => $transport_detail->unit_id,
                     "unit" => [
-                        "name" => $transport_detail->unit->name,
+                        "name" => $transport_detail->unit?->name ?? 'SIN ASIGNAR',
                     ],
                     "price_unit"  => $transport_detail->price_unit,
                     "total"  => $transport_detail->total,
