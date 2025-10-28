@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Transport\TransportDetail;
 use App\Http\Resources\Transport\TransportResource;
 use App\Http\Resources\Transport\TransportCollection;
-use Barryvdh\DomPDF\Facade\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TransportController extends Controller
 {
@@ -27,7 +27,7 @@ class TransportController extends Controller
         $end_date = $request->end_date;
         $search_product = $request->search_product;
 
-        $transports = Transport::filterAdvance($search,$warehouse_start_id,$warehouse_end_id,$unit_id,$start_date,$end_date,$search_product)->orderBy("id","desc")->paginate(25);
+        $transports = Transport::filterAdvance($search, $warehouse_start_id, $warehouse_end_id, $unit_id, $start_date, $end_date, $search_product)->orderBy("id", "desc")->paginate(25);
 
         return response()->json([
             "total_page" => $transports->lastPage(),
@@ -35,12 +35,13 @@ class TransportController extends Controller
         ]);
     }
 
-    public function config() {
-        $warehouses = Warehouse::where("state",1)->get();
-        $units = Unit::select("id","name")->where("state",1)->get();
+    public function config()
+    {
+        $warehouses = Warehouse::where("state", 1)->get();
+        $units = Unit::select("id", "name")->where("state", 1)->get();
         date_default_timezone_set("America/Lima");
         return response()->json([
-            "warehouses" => $warehouses->map(function($warehouse) {
+            "warehouses" => $warehouses->map(function ($warehouse) {
                 return [
                     "id" => $warehouse->id,
                     "name" => $warehouse->name,
@@ -52,13 +53,14 @@ class TransportController extends Controller
         ]);
     }
 
-    public function transport_pdf($id){
+    public function transport_pdf($id)
+    {
 
         $transport = Transport::findOrFail($id);
 
-        $pdf = PDF::loadView("Transport.pdf_transport",compact('transport'));
+        $pdf = PDF::loadView("Transport.pdf_transport", compact('transport'));
 
-        return $pdf->stream("transport-".$transport->id.".pdf");
+        return $pdf->stream("transport-" . $transport->id . ".pdf");
     }
     /**
      * Store a newly created resource in storage.
@@ -66,8 +68,8 @@ class TransportController extends Controller
     public function store(Request $request)
     {
         $transport = Transport::create([
-            "warehouse_start_id"  => $request->warehouse_start_id,
-            "warehouse_end_id"  => $request->warehouse_end_id,
+            "warehouse_start_id" => $request->warehouse_start_id,
+            "warehouse_end_id" => $request->warehouse_end_id,
             "user_id" => auth('api')->user()->id,
             "date_emision" => $request->date_emision,
             "total" => $request->total,
@@ -111,11 +113,11 @@ class TransportController extends Controller
     public function update(Request $request, string $id)
     {
         $transport = Transport::findOrFail($id);
-        if($request->state >= 3 && $transport->state < 3){
-            $n_details = TransportDetail::where("transport_id",$id)->count();
-            $n_state_salida = TransportDetail::where("transport_id",$id)->where("state",2)->count();
+        if ($request->state >= 3 && $transport->state < 3) {
+            $n_details = TransportDetail::where("transport_id", $id)->count();
+            $n_state_salida = TransportDetail::where("transport_id", $id)->where("state", 2)->count();
 
-            if($n_details != $n_state_salida){
+            if ($n_details != $n_state_salida) {
                 return response()->json([
                     "message" => 403,
                     "message_text" => "No puedes cambiar de estado porque aun tus productos se encuentran en pendiente",
@@ -123,35 +125,35 @@ class TransportController extends Controller
             }
         }
         date_default_timezone_set('America/Lima');
-        if($transport->state < 3 && $request->state == 3){
+        if ($transport->state < 3 && $request->state == 3) {
             $transport->update([
                 "date_salida" => now(),
             ]);
         }
-        if($transport->state < 6 && $request->state == 6){
+        if ($transport->state < 6 && $request->state == 6) {
             $transport->update([
                 "date_entrega" => now(),
             ]);
         }
-        if($request->state == 6){
-            $n_details = TransportDetail::where("transport_id",$id)->count();
-            $n_state_entrega = TransportDetail::where("transport_id",$id)->where("state",3)->count();
+        if ($request->state == 6) {
+            $n_details = TransportDetail::where("transport_id", $id)->count();
+            $n_state_entrega = TransportDetail::where("transport_id", $id)->where("state", 3)->count();
 
-            if($n_details != $n_state_entrega){
+            if ($n_details != $n_state_entrega) {
                 return response()->json([
                     "message" => 403,
                     "message_text" => "No puedes cambiar de estado porque aun tus productos se encuentran en salida",
                 ]);
             }
         }
-        if($transport->state >= 3){
-            if($transport->warehouse_start_id != $request->warehouse_start_id){
+        if ($transport->state >= 3) {
+            if ($transport->warehouse_start_id != $request->warehouse_start_id) {
                 return response()->json([
                     "message" => 403,
                     "message_text" => "No puedes cambiar el almacen de atención"
                 ]);
             }
-            if($transport->warehouse_end_id != $request->warehouse_end_id){
+            if ($transport->warehouse_end_id != $request->warehouse_end_id) {
                 return response()->json([
                     "message" => 403,
                     "message_text" => "No puedes cambiar el almacen de recepción"
@@ -176,7 +178,7 @@ class TransportController extends Controller
     public function destroy(string $id)
     {
         $transport = Transport::findOrFail($id);
-        if($transport->state >= 3){
+        if ($transport->state >= 3) {
             return response()->json([
                 "message" => 403,
                 "message_text" => "LA SOLICITUD DE TRANSPORTE NO SE PUEDE ELIMINAR PORQUE YA HA INICIADO SU PROCESO DE ENTREGA"
