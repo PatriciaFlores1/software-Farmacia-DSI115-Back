@@ -41,9 +41,9 @@ class TransportResource extends JsonResource
                     "id" => $transport_detail->id,
                     "product_id"  => $transport_detail->product_id,
                     "product" => [
-                        "title" => $transport_detail->product->title,
-                        "sku" => $transport_detail->product->sku,
-                        "warehouses" => $transport_detail->product->warehouses->map(function($warehouse) {
+                        "title" => $transport_detail->product?->title,
+                        "sku" => $transport_detail->product?->sku,
+                        "warehouses" => $transport_detail->product?->warehouses->map(function($warehouse) {
                             return [
                                 "id" => $warehouse->id,
                                 "warehouse_id" => $warehouse->warehouse_id,
