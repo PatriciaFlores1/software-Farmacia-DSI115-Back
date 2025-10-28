@@ -56,7 +56,7 @@ class TransportController extends Controller
 
         $transport = Transport::findOrFail($id);
 
-        $pdf = PDF::loadView("transport.pdf_transport",compact('transport'));
+        $pdf = PDF::loadView("Transport.pdf_transport",compact('transport'));
 
         return $pdf->stream("transport-".$transport->id.".pdf");
     }
