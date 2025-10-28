@@ -18,9 +18,9 @@ class ConversionResource extends JsonResource
             "id" => $this->resource->id,
             "product_id" => $this->resource->product_id,
             "product" => [
-                "title" => $this->resource->product->title,
-                "sku" => $this->resource->product->sku,
-                "imagen" => $this->resource->product->product_imagen
+                "title" => $this->resource->product?->title,
+                "sku" => $this->resource->product?->sku,
+                "imagen" => $this->resource->product?->product_imagen
             ],
             "warehouse_id" => $this->resource->warehouse_id,
             "warehouse" => [
