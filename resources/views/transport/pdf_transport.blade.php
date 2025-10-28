@@ -186,8 +186,8 @@
       @foreach ($transport->transport_details as $key => $detail)
       <tr>
         <td>{{ $key + 1 }}</td>
-        <td>{{ $detail->product->title }}</td>
-        <td>{{ $detail->unit->name }}</td>
+        <td>{{ $detail->product?->title }}</td>
+        <td>{{ $detail->unit?->name }}</td>
         <td>$. {{ number_format($detail->price_unit, 2) }}</td>
         <td>{{ $detail->quantity }}</td>
         <td><strong>$. {{ number_format($detail->total, 2) }}</strong></td>
