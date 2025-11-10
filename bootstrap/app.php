@@ -28,4 +28,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 ], 401);
             }
         });
+    })->withSchedule(function () {
+        \Illuminate\Support\Facades\Schedule::command('app:expiration-products')->dailyAt('09:52');
     })->create();
