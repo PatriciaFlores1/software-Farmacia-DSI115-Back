@@ -40,6 +40,7 @@ class ProductResource extends JsonResource
             "warranty_day" => $this->resource->warranty_day,
             "tax_selected" => $this->resource->tax_selected,
             "importe_iva" => $this->resource->importe_iva,
+            'expiration_date' => $this->resource->expiration_date,
             "created_at" => $this->resource->created_at->format("Y/m/d h:i A"),
             "warehouses" => $this->resource->warehouses->map(function($warehouse) {
                 return [

@@ -28,8 +28,9 @@ class Product extends Model
         "warranty_day",
         "tax_selected",
         "importe_iva",
+        'expiration_date',
     ];
-    
+
     public function setCreatedAtAttribute($value)
     {
     	date_default_timezone_set('America/Lima');
