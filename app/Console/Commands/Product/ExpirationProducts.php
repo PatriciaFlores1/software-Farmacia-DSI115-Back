@@ -31,7 +31,7 @@ class ExpirationProducts extends Command
         $products = $this->getExpirationProducts();
 
         if ($products->count() > 0) {
-            Mail::to('rolando.canales@gmail.com')->send(new ExpirationProductMail($products));
+            Mail::to('fb21010@ues.edu.sv')->send(new ExpirationProductMail($products));
         } else {
             $this->info("No products are about to expire.");
         }
